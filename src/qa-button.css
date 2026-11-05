@@ -1,0 +1,56 @@
+.qa-button.ant-btn {
+  --qa-button-start: #09547d;
+  --qa-button-end: #12a8bd;
+  --qa-button-text: #fff;
+  --qa-button-focus: #0787a3;
+  color: var(--qa-button-text);
+  background: linear-gradient(105deg, var(--qa-button-start), var(--qa-button-end));
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--qa-button-end) 24%, transparent);
+  transition:
+    filter 150ms ease,
+    box-shadow 150ms ease;
+}
+.qa-button.ant-btn-dangerous {
+  --qa-button-start: #df6e6e;
+  --qa-button-end: #bd1246;
+  --qa-button-focus: #bd1246;
+}
+.qa-button.ant-btn:not(.ant-btn-circle) {
+  min-height: 32px;
+  padding-inline: 15px;
+}
+.qa-button.ant-btn-circle {
+  border-radius: 50%;
+}
+.qa-button.ant-btn:not(:disabled):not(.ant-btn-disabled):hover,
+.qa-button.ant-btn:not(:disabled):not(.ant-btn-disabled):active {
+  color: var(--qa-button-text);
+  border-color: transparent;
+  background: linear-gradient(105deg, var(--qa-button-start), var(--qa-button-end));
+  filter: brightness(1.08);
+}
+.qa-button.ant-btn:not(:disabled):not(.ant-btn-disabled):active {
+  filter: brightness(0.94);
+  box-shadow: none;
+}
+.qa-button.ant-btn:focus-visible {
+  outline: 3px solid var(--qa-button-focus);
+  outline-offset: 3px;
+}
+.qa-button.ant-btn:disabled,
+.qa-button.ant-btn.ant-btn-disabled {
+  color: var(--qa-button-text);
+  background: linear-gradient(105deg, var(--qa-button-start), var(--qa-button-end));
+  border-color: transparent;
+  box-shadow: none;
+  opacity: 0.5;
+}
+@media (prefers-reduced-motion: reduce) {
+  .qa-button.ant-btn {
+    transition: none;
+  }
+}

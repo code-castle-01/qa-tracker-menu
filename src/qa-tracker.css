@@ -1,0 +1,199 @@
+.qa-tracker-app {
+  --qa-tracker-ink: #17364f;
+  --qa-tracker-muted: #637381;
+  --qa-tracker-border: #dce5eb;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  /* A viewport-sized scene must not depend on the host height or gallery contents. */
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  color: var(--qa-tracker-ink);
+  background: #f7f9fb;
+}
+.qa-tracker-app__header {
+  display: flex;
+  min-height: 56px;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px 12px;
+  border-bottom: 1px solid var(--qa-tracker-border);
+}
+.qa-tracker-app__mark {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  border: 1px solid #cce9ed;
+  border-radius: 10px;
+  color: #087f91;
+  background: #e9f7f8;
+  font-size: 20px;
+}
+.qa-tracker-app__identity {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+.qa-tracker-app__title.ant-typography {
+  margin: 0;
+  color: var(--qa-tracker-ink);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.qa-tracker-app__tagline.ant-typography {
+  color: var(--qa-tracker-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.qa-tracker-app__main {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+}
+
+.qa-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.qa-masonry {
+  columns: 300px;
+  column-gap: 16px;
+}
+.qa-evidence {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+.qa-evidence .ant-typography {
+  overflow-wrap: anywhere;
+  margin-top: 8px;
+}
+
+.qa-workspace {
+  min-height: 0;
+  flex: 1;
+}
+.qa-evidence-panel,
+.qa-platform-panel,
+.qa-external-panel {
+  min-width: 0;
+  min-height: 0;
+}
+.qa-evidence-panel {
+  padding: 16px;
+  border-radius: 8px;
+  background: #42536b;
+}
+.qa-evidence-panel .qa-toolbar > .ant-typography,
+.qa-evidence-panel .ant-empty-description {
+  color: var(--qa-tracker-on-accent, #fff);
+}
+.qa-workspace--resizing .qa-external-frame {
+  pointer-events: none;
+}
+.qa-evidence-panel .qa-toolbar {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.qa-external-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.qa-url-form {
+  display: grid;
+  gap: 8px;
+}
+.qa-url-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.qa-url-controls .ant-input-affix-wrapper {
+  flex: 1 1 20rem;
+  min-width: min(100%, 16rem);
+}
+.qa-url-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.qa-external-help {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.qa-external-frame {
+  display: block;
+  width: 100%;
+  height: 70dvh;
+  border: 0;
+}
+.qa-external-empty {
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  flex: 1;
+}
+@media (min-width: 1024px) {
+  .qa-tracker-app {
+    padding: 14px 20px 20px;
+  }
+  .qa-platform-panel {
+    padding-left: 20px;
+  }
+  .qa-platform-panel > .qa-external-panel {
+    height: 100%;
+  }
+  .qa-evidence-panel,
+  .qa-external-panel {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .qa-external-frame {
+    flex: 1;
+    min-height: 240px;
+    height: 0;
+  }
+}
+@media (max-width: 1023px) {
+  .qa-tracker-app {
+    padding: 12px;
+    overflow-y: auto;
+  }
+  .qa-tracker-app__main {
+    flex: none;
+  }
+  .qa-workspace.ant-splitter {
+    flex-direction: column;
+    gap: 24px;
+    height: auto;
+  }
+  /* Keep both mounted (including the iframe) when crossing the breakpoint. */
+  .qa-workspace > .ant-splitter-panel {
+    flex: none !important;
+    width: 100%;
+    overflow: visible;
+  }
+  .qa-workspace > .ant-splitter-bar {
+    display: none;
+  }
+}

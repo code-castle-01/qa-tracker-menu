@@ -1,0 +1,24 @@
+{
+  "name": "qa-tracker-consumer-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3011",
+    "build": "tsc --noEmit && vite build"
+  },
+  "dependencies": {
+    "qa-tracker-menu": "file:../..",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "antd": "^6.6.5",
+    "@ant-design/icons": "^6.3.4",
+    "react-router-dom": "^7.13.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1",
+    "@types/react": "^19.2.13",
+    "@types/react-dom": "^19.2.3"
+  }
+}

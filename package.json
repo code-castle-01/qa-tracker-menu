@@ -1,0 +1,95 @@
+{
+  "name": "qa-tracker-menu",
+  "version": "0.1.3",
+  "description": "React QA capture button, local screenshot gallery and external QA workspace.",
+  "type": "module",
+  "license": "MIT",
+  "author": "CodeCastle",
+  "keywords": [
+    "react",
+    "qa",
+    "screenshots",
+    "indexeddb",
+    "antd"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./storage": {
+      "types": "./dist/storage.d.ts",
+      "import": "./dist/storage.js"
+    },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js"
+    },
+    "./styles.css": {
+      "types": "./dist/styles.d.ts",
+      "default": "./dist/styles.css"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "docs"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json && node scripts/finalize-build.mjs",
+    "dev": "vite build --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --no-file-parallelism",
+    "prepack": "npm run build",
+    "pack:release": "npm pack",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "antd": "^6.6.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^25.2.1",
+    "@types/react": "^19.2.13",
+    "@types/react-dom": "^19.2.3",
+    "antd": "^6.6.5",
+    "fake-indexeddb": "^6.2.6",
+    "jsdom": "^28.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  },
+  "repository": {
+    "url": "https://github.com/code-castle-01/qa-tracker-menu.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/code-castle-01/qa-tracker-menu#readme",
+  "bugs": {
+    "url": "https://github.com/code-castle-01/qa-tracker-menu/issues"
+  },
+  "packageManager": "npm@11.6.2"
+}
