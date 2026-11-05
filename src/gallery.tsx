@@ -13,19 +13,25 @@ function EvidenceCard({
   text,
   notify,
   onDelete,
+  previewEvidence,
 }: {
   evidence: Evidence;
   text: QaText;
   notify: QaNotify;
   onDelete: (id: string) => Promise<void>;
+  previewEvidence: Map<string, Evidence>;
 }) {
   const [url, setUrl] = useState<string>();
   const [deleting, setDeleting] = useState(false);
   useEffect(() => {
     const objectUrl = URL.createObjectURL(evidence.blob);
+    previewEvidence.set(objectUrl, evidence);
     setUrl(objectUrl);
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [evidence.blob]);
+    return () => {
+      previewEvidence.delete(objectUrl);
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [evidence, previewEvidence]);
   return (
     <Card size="small" className="qa-evidence">
       <Image src={url} alt={`${evidence.context.title} — ${evidence.createdAt}`} width="100%" />
@@ -78,6 +84,9 @@ export function EvidenceGallery({
   const [error, setError] = useState(false);
   const [more, setMore] = useState(false);
   const [clearing, setClearing] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [copying, setCopying] = useState(false);
+  const [previewEvidence] = useState(() => new Map<string, Evidence>());
   const generation = useRef(0);
   const cancelLoads = useCallback(() => {
     generation.current++;
@@ -166,17 +175,50 @@ export function EvidenceGallery({
         />
       )}
       {!loading && !error && !rows.length && <Empty description={text('empty')} />}
-      <div className="qa-masonry">
-        {rows.map(evidence => (
-          <EvidenceCard
-            key={evidence.id}
-            evidence={evidence}
-            text={text}
-            notify={notify}
-            onDelete={remove}
-          />
-        ))}
-      </div>
+      <Image.PreviewGroup
+        preview={{
+          open: previewOpen,
+          onOpenChange: setPreviewOpen,
+          actionsRender: (actions, { image }) => (
+            <div className="qa-preview-actions">
+              <QaButton
+                icon={<CopyOutlined aria-hidden />}
+                loading={copying}
+                onClick={async () => {
+                  const evidence = previewEvidence.get(image.url);
+                  if (!evidence || copying) return;
+                  setCopying(true);
+                  try {
+                    await copyEvidence(evidence.blob);
+                    setPreviewOpen(false);
+                    notify('success', text('copied'));
+                  } catch (reason) {
+                    notify('error', text(errorKey(reason, 'copyError')));
+                  } finally {
+                    setCopying(false);
+                  }
+                }}
+              >
+                {text('copy')}
+              </QaButton>
+              {actions}
+            </div>
+          ),
+        }}
+      >
+        <div className="qa-masonry">
+          {rows.map(evidence => (
+            <EvidenceCard
+              key={evidence.id}
+              evidence={evidence}
+              text={text}
+              notify={notify}
+              onDelete={remove}
+              previewEvidence={previewEvidence}
+            />
+          ))}
+        </div>
+      </Image.PreviewGroup>
       {loading && <Spin aria-label={text('loading')} />}
       {more && !loading && !error && (
         <QaButton

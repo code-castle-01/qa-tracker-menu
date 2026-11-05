@@ -80,6 +80,12 @@
   break-inside: avoid;
   margin-bottom: 16px;
 }
+.qa-preview-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
 .qa-evidence .ant-typography {
   overflow-wrap: anywhere;
   margin-top: 8px;

@@ -24,11 +24,46 @@ const row: Evidence = {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(copyEvidence).mockResolvedValue(undefined);
   Object.defineProperty(URL, 'createObjectURL', {
     configurable: true,
     value: vi.fn(() => 'blob:test'),
   });
   Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: vi.fn() });
+});
+
+it('navigates between images and closes after copying the visible image', async () => {
+  vi.mocked(URL.createObjectURL).mockImplementationOnce(() => 'blob:first').mockImplementationOnce(() => 'blob:second');
+  const second = { ...row, id: 'two', blob: new Blob(['second']), context: { ...row.context, title: 'Second view' } };
+  vi.mocked(listEvidence).mockResolvedValue([row, second]);
+  const notify = vi.fn();
+  render(<EvidenceGallery text={text} notify={notify} />);
+  fireEvent.click(await screen.findByAltText(`Sample view — ${row.createdAt}`));
+  const dialog = await screen.findByRole('dialog');
+  fireEvent.keyDown(window, { key: 'ArrowRight', keyCode: 39 });
+  await waitFor(() => expect(dialog.querySelector('img.ant-image-preview-img')).toHaveAttribute('src', 'blob:second'));
+  fireEvent.keyDown(window, { key: 'ArrowLeft', keyCode: 37 });
+  await waitFor(() => expect(dialog.querySelector('img.ant-image-preview-img')).toHaveAttribute('src', 'blob:first'));
+  fireEvent.keyDown(window, { key: 'ArrowRight', keyCode: 39 });
+  fireEvent.click(within(dialog).getByRole('button', { name: 'copy' }));
+  await waitFor(() => expect(copyEvidence).toHaveBeenCalledWith(second.blob));
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeVisible());
+  expect(notify).toHaveBeenCalledWith('success', 'copied');
+});
+
+it('keeps the preview open if copying fails and allows retrying', async () => {
+  vi.mocked(listEvidence).mockResolvedValue([row]);
+  vi.mocked(copyEvidence).mockRejectedValueOnce(new Error('failed'));
+  const notify = vi.fn();
+  render(<EvidenceGallery text={text} notify={notify} />);
+  fireEvent.click(await screen.findByAltText(`Sample view — ${row.createdAt}`));
+  const dialog = await screen.findByRole('dialog');
+  fireEvent.click(within(dialog).getByRole('button', { name: 'copy' }));
+  await waitFor(() => expect(notify).toHaveBeenCalledWith('error', 'copyError'));
+  expect(dialog).toBeVisible();
+  await waitFor(() => expect(within(dialog).getByRole('button', { name: 'copy' })).not.toHaveClass('ant-btn-loading'));
+  fireEvent.click(within(dialog).getByRole('button', { name: 'copy' }));
+  await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeVisible());
 });
 
 it('shows empty state and recovers from a failed read', async () => {
