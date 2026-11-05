@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+Adds image carousel navigation with arrows and keyboard, plus a copy button for the visible image. The preview closes after a successful copy and stays open on failure to allow retrying.
+
 ## 0.1.3
 
 La escena QA usa 100dvh independientemente de la altura del anfitrión y del número de evidencias. El iframe recibe el espacio restante en escritorio; se conserva el scroll de la escena apilada en móvil. Sin cambios de API ni almacenamiento.
